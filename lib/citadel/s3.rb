@@ -26,8 +26,6 @@ require 'time'
 require 'openssl'
 require 'base64'
 
-require 'chef/http'
-
 require 'citadel/error'
 
 
@@ -47,38 +45,31 @@ class Citadel
     # @param secret_access_key [String] AWS secret access key.
     # @param token [String, nil] AWS IAM token.
     # @param region [String] S3 bucket region.
-    # @return [Net::HTTPResponse]
+    # @return [String] The S3 object contents.
     def get(bucket:, path:, access_key_id:, secret_access_key:, token: nil, region: nil)
-      region ||= 'us-east-1' # Most buckets.
-      path = path[1..-1] if path[0] == '/'
-      now = Time.now().utc.strftime('%a, %d %b %Y %H:%M:%S GMT')
-
-      string_to_sign = "GET\n\n\n#{now}\n"
-      string_to_sign << "x-amz-security-token:#{token}\n" if token
-      string_to_sign << "/#{bucket}/#{path}"
-
-      signed = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha1'), secret_access_key, string_to_sign)
-      signed_base64 = Base64.encode64(signed)
-
-      headers = {
-        'date' => now,
-        'authorization' => "AWS #{access_key_id}:#{signed_base64}",
-      }
-      headers['x-amz-security-token'] = token if token
-
-      hostname = case region
-      when 'us-east-1'
-        's3.amazonaws.com'
-      else
-        "s3-#{region}.amazonaws.com"
+      begin
+        require 'aws-sdk'
+      rescue LoadError
+        raise 'Citadel requires `aws-sdk` ~> 3.0.0'
       end
 
+      region ||= 'us-east-1' # Most buckets.
+      path = path[1..-1] if path[0] == '/'
+
       begin
-        Chef::HTTP.new("https://#{hostname}").get("#{bucket}/#{path}", headers)
-      rescue Net::HTTPServerException => e
+        client = Aws::S3::Client.new(
+          region: region,
+          access_key_id: access_key_id,
+          secret_access_key: secret_access_key,
+          session_token: token
+        )
+        s3 = Aws::S3::Resource.new(client: client)
+        bucket = s3.bucket(bucket)
+        object = bucket.object(path).get
+        return object.body.read
+      rescue Aws::Errors::ServiceError => e
         raise CitadelError.new("Unable to download #{path}: #{e}")
       end
     end
-
   end
 end
