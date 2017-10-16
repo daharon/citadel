@@ -34,4 +34,3 @@ class Chef
     include Citadel::ChefDSL
   end
 end
-

@@ -17,5 +17,5 @@
 
 class Citadel
   # Citadel gem version.
-  VERSION = '1.1.1.pre'
+  VERSION = '2.0.0'
 end

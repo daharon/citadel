@@ -75,6 +75,6 @@ class Citadel
 
   def [](key)
     Chef::Log.debug("citadel: Retrieving #{@bucket}/#{key}")
-    Citadel::S3.get(bucket: @bucket, path: key, region: @region, **@credentials).to_s
+    Citadel::S3.get(bucket: @bucket, path: key, region: @region, **@credentials)
   end
 end
