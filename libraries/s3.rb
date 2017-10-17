@@ -26,8 +26,6 @@ require 'time'
 require 'openssl'
 require 'base64'
 
-require 'citadel/error'
-
 
 class Citadel
   # Simple read-only S3 client.

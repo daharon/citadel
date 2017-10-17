@@ -28,11 +28,6 @@ require 'chef/json_compat'
 #     variables password: citadel['myapp/password']
 #   end
 class Citadel
-  autoload :ChefDSL, 'citadel/chef_dsl'
-  autoload :CitadelError, 'citadel/error'
-  autoload :S3, 'citadel/s3'
-  autoload :VERSION, 'citadel/version'
-
   attr_reader :bucket, :region, :credentials
 
   def initialize(node, bucket=nil, region=nil)

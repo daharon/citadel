@@ -15,9 +15,6 @@
 # limitations under the License.
 #
 
-require 'citadel'
-require 'citadel/safe_node'
-
 
 # Patch our DSL extension into Chef.
 # @api private
