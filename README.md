@@ -1,14 +1,10 @@
 # Citadel Cookbook
 
-[![Build Status](https://img.shields.io/travis/poise/citadel.svg)](https://travis-ci.org/poise/citadel)
-[![Gem Version](https://img.shields.io/gem/v/poise-citadel.svg)](https://rubygems.org/gems/poise-citadel)
-[![Cookbook Version](https://img.shields.io/cookbook/v/citadel.svg)](https://supermarket.chef.io/cookbooks/citadel)
-[![Coverage](https://img.shields.io/codecov/c/github/poise/citadel.svg)](https://codecov.io/github/poise/citadel)
-[![Gemnasium](https://img.shields.io/gemnasium/poise/citadel.svg)](https://gemnasium.com/poise/citadel)
 [![License](https://img.shields.io/badge/license-Apache_2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 Using a combination of IAM roles, S3 buckets, and EC2 it is possible to use AWS
 as a trusted-third-party for distributing secret or otherwise sensitive data.
+Forked from https://github.com/poise/citadel
 
 ## Overview
 

@@ -1,4 +1,5 @@
 #
+# Copyright 2013-2016, Balanced, Inc.
 # Copyright 2016, Noah Kantrowitz
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,4 +15,20 @@
 # limitations under the License.
 #
 
-override['citadel']['bucket'] = 'citadel-kitchen'
+
+# Patch our DSL extension into Chef.
+# @api private
+class Chef
+  class Recipe
+    include Citadel::ChefDSL
+  end
+
+  class Resource
+    include Citadel::ChefDSL
+  end
+
+  class Provider
+    include Citadel::ChefDSL
+  end
+end
+
